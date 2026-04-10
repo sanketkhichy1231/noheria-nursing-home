@@ -1,0 +1,221 @@
+type UserRole__1 = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserRole = 
+ variant {
+   admin;
+   doctor;
+   staff;
+ };
+type UserProfile = 
+ record {
+   createdAt: int;
+   email: text;
+   name: text;
+   "principal": principal;
+   role: UserRole;
+ };
+type TrendEntry = 
+ record {
+   count: nat;
+   date: text;
+ };
+type Testimonial = 
+ record {
+   id: nat;
+   name: text;
+   rating: nat;
+   role: text;
+   "text": text;
+ };
+type SiteContent = 
+ record {
+   contactInfo: ContactInfo;
+   faqs: vec FAQ;
+   heroCtaText: text;
+   heroIntro: text;
+   heroTagline: text;
+   heroTitle: text;
+   services: vec ServiceCard;
+   testimonials: vec Testimonial;
+ };
+type ServiceCard = 
+ record {
+   description: text;
+   icon: text;
+   id: nat;
+   order: nat;
+   title: text;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok: nat;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok;
+ };
+type Patient = 
+ record {
+   appointmentIds: vec nat;
+   email: opt text;
+   id: nat;
+   name: text;
+   phone: text;
+ };
+type FAQ = 
+ record {
+   answer: text;
+   id: nat;
+   order: nat;
+   question: text;
+ };
+type DoctorPublic = 
+ record {
+   availability: vec AvailabilitySlot;
+   email: text;
+   id: nat;
+   isOnline: bool;
+   name: text;
+   phone: text;
+   specialization: text;
+   status: text;
+ };
+type Doctor = 
+ record {
+   appointmentStats: AppointmentStats;
+   availability: vec AvailabilitySlot;
+   email: text;
+   id: nat;
+   isOnline: bool;
+   lastLogin: int;
+   name: text;
+   phone: text;
+   specialization: text;
+   status: text;
+ };
+type ContactInfo = 
+ record {
+   address: text;
+   email: text;
+   hours: text;
+   mapUrl: text;
+   phone: text;
+ };
+type Blog = 
+ record {
+   authorId: text;
+   blogType: text;
+   content: text;
+   createdAt: int;
+   id: nat;
+   imageUrl: text;
+   status: text;
+   title: text;
+   updatedAt: int;
+ };
+type AvailabilitySlot = 
+ record {
+   dayOfWeek: text;
+   endHour: nat;
+   startHour: nat;
+ };
+type AuditLog = 
+ record {
+   action: text;
+   details: text;
+   id: nat;
+   timestamp: int;
+   userId: text;
+ };
+type AppointmentSummary = 
+ record {
+   approved: nat;
+   cancelled: nat;
+   completed: nat;
+   pending: nat;
+   total: nat;
+ };
+type AppointmentStats = 
+ record {
+   accepted: nat;
+   completed: nat;
+   rejected: nat;
+   total: nat;
+ };
+type Appointment = 
+ record {
+   createdAt: int;
+   date: text;
+   doctorId: nat;
+   id: nat;
+   notes: text;
+   patientName: text;
+   phone: text;
+   problem: text;
+   slot: text;
+   status: text;
+   updatedAt: int;
+ };
+service : {
+  _initializeAccessControl: () -> ();
+  addDoctor: (name: text, specialization: text, email: text, phone: text) ->
+   (Result_1);
+  assignCallerUserRole: (user: principal, role: UserRole__1) -> ();
+  createAppointment: (patientName: text, phone: text, problem: text, date:
+   text, slot: text, doctorId: opt nat) -> (Result_1);
+  createBlog: (title: text, content: text, imageUrl: text, blogType: 
+   text) -> (Result_1);
+  deleteAppointment: (id: nat) -> (Result);
+  deleteBlog: (id: nat) -> (Result);
+  editBlog: (id: nat, title: text, content: text, imageUrl: text, blogType:
+   text) -> (Result);
+  editDoctor: (id: nat, name: text, specialization: text, email: text, phone:
+   text) -> (Result);
+  getAllBlogs: () -> (vec Blog) query;
+  getAppointmentStats: () -> (AppointmentSummary) query;
+  getAppointmentTrend: (days: nat) -> (vec TrendEntry) query;
+  getAppointments: (statusFilter: opt text, doctorIdFilter: opt nat) ->
+   (vec Appointment) query;
+  getAppointmentsByDoctor: (doctorId: nat) -> (vec Appointment) query;
+  getAuditLogs: () -> (vec AuditLog) query;
+  getAuditLogsByUser: (userId: text) -> (vec AuditLog) query;
+  getAvailableSlots: (date: text, doctorId: opt nat) -> (vec text) query;
+  getCallerUserProfile: () -> (opt UserProfile) query;
+  getCallerUserRole: () -> (UserRole__1) query;
+  getCurrentUser: () -> (opt UserProfile) query;
+  getDoctorById: (id: nat) -> (opt Doctor) query;
+  getDoctorStats: (doctorId: nat) -> (AppointmentStats) query;
+  getDoctors: () -> (vec DoctorPublic) query;
+  getPatientByPhone: (phone: text) -> (opt Patient) query;
+  getPatientHistory: (patientId: nat) -> (vec Appointment) query;
+  getPatients: () -> (vec Patient) query;
+  getPublishedBlogs: () -> (vec Blog) query;
+  getSiteContent: () -> (SiteContent) query;
+  isCallerAdmin: () -> (bool) query;
+  publishBlog: (id: nat) -> (Result);
+  registerUser: ("principal": principal, name: text, email: text, role:
+   UserRole) -> (Result);
+  rescheduleAppointment: (id: nat, newDate: text, newSlot: text, newDoctorId:
+   opt nat) -> (Result);
+  saveCallerUserProfile: (name: text, email: text) -> (Result);
+  setDoctorAvailability: (doctorId: nat, availability:
+   vec AvailabilitySlot) -> (Result);
+  toggleDoctorOnlineStatus: (doctorId: nat, isOnline: bool) -> (Result);
+  unpublishBlog: (id: nat) -> (Result);
+  updateAppointmentStatus: (id: nat, newStatus: text, notes: opt text) ->
+   (Result);
+  updateContactInfo: (address: text, phone: text, email: text, hours: 
+   text, mapUrl: text) -> (Result);
+  updateFAQs: (faqs: vec FAQ) -> (Result);
+  updateHeroSection: (heroTitle: text, heroTagline: text, heroIntro: 
+   text, heroCtaText: text) -> (Result);
+  updateServices: (services: vec ServiceCard) -> (Result);
+  updateTestimonials: (testimonials: vec Testimonial) -> (Result);
+  updateUserRole: (targetPrincipal: principal, newRole: UserRole) -> (Result);
+}

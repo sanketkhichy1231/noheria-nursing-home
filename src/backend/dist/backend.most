@@ -1,0 +1,155 @@
+// Version: 1.0.0
+type AppointmentStats__280455184 =
+  {accepted : Nat; completed : Nat; rejected : Nat; total : Nat};
+type Appointment__77617247 =
+  {
+    createdAt : Int;
+    date : Text;
+    doctorId : Nat;
+    id : Nat;
+    notes : Text;
+    patientName : Text;
+    phone : Text;
+    problem : Text;
+    slot : Text;
+    status : Text;
+    updatedAt : Int
+  };
+type AuditLog__476823628 =
+  {action : Text; details : Text; id : Nat; timestamp : Int; userId : Text};
+type AvailabilitySlot__72145784 =
+  {dayOfWeek : Text; endHour : Nat; startHour : Nat};
+type Blog__213160858 =
+  {
+    authorId : Text;
+    blogType : Text;
+    content : Text;
+    createdAt : Int;
+    id : Nat;
+    imageUrl : Text;
+    status : Text;
+    title : Text;
+    updatedAt : Int
+  };
+type ContactInfo__1003860955 =
+  {address : Text; email : Text; hours : Text; mapUrl : Text; phone : Text};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Doctor__468753071 =
+  {
+    appointmentStats : AppointmentStats__280455184;
+    availability : [AvailabilitySlot__72145784];
+    email : Text;
+    id : Nat;
+    isOnline : Bool;
+    lastLogin : Int;
+    name : Text;
+    phone : Text;
+    specialization : Text;
+    status : Text
+  };
+type FAQ__519020405 = {answer : Text; id : Nat; order : Nat; question : Text};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type Patient__512300474 =
+  {
+    appointmentIds : [Nat];
+    email : ?Text;
+    id : Nat;
+    name : Text;
+    phone : Text
+  };
+type ServiceCard__657668020 =
+  {description : Text; icon : Text; id : Nat; order : Nat; title : Text};
+type SiteContent__945559137 =
+  {
+    contactInfo : ContactInfo__1003860955;
+    faqs : [FAQ__519020405];
+    heroCtaText : Text;
+    heroIntro : Text;
+    heroTagline : Text;
+    heroTitle : Text;
+    services : [ServiceCard__657668020];
+    testimonials : [Testimonial__123519429]
+  };
+type Testimonial__123519429 =
+  {id : Nat; name : Text; rating : Nat; role : Text; text : Text};
+type UserProfile__775633023 =
+  {
+    createdAt : Int;
+    email : Text;
+    name : Text;
+    principal : Principal;
+    role : UserRole__549269184
+  };
+type UserRole__1054455867 = {#admin; #guest; #user};
+type UserRole__549269184 = {#admin; #doctor; #staff};
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1054455867>
+    };
+  stable appointmentIdRef : {var val : Nat};
+  stable appointments :
+    {
+      var root : Node__46230540<Nat, Appointment__77617247>;
+      var size : Nat__490723111
+    };
+  stable auditIdRef : {var val : Nat};
+  stable auditLogs :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?AuditLog__476823628]];
+      var elementIndex : Nat__490723111
+    };
+  stable blogIdRef : {var val : Nat};
+  stable blogs :
+    {
+      var root : Node__46230540<Nat, Blog__213160858>;
+      var size : Nat__490723111
+    };
+  stable doctorIdRef : {var val : Nat};
+  stable doctors :
+    {
+      var root : Node__46230540<Nat, Doctor__468753071>;
+      var size : Nat__490723111
+    };
+  stable var nextAppointmentId : Nat;
+  stable var nextAuditId : Nat;
+  stable var nextBlogId : Nat;
+  stable var nextDoctorId : Nat;
+  stable var nextPatientId : Nat;
+  stable patientIdRef : {var val : Nat};
+  stable patients :
+    {
+      var root : Node__46230540<Nat, Patient__512300474>;
+      var size : Nat__490723111
+    };
+  stable var siteContent :
+    {
+      contactInfo : ContactInfo__1003860955;
+      faqs : [FAQ__519020405];
+      heroCtaText : Text;
+      heroIntro : Text;
+      heroTagline : Text;
+      heroTitle : Text;
+      services : [ServiceCard__657668020];
+      testimonials : [Testimonial__123519429]
+    };
+  stable siteContentRef : {var val : SiteContent__945559137};
+  stable userProfiles :
+    {
+      var root : Node__46230540<Principal, UserProfile__775633023>;
+      var size : Nat__490723111
+    }
+};

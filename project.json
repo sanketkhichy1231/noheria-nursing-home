@@ -1,0 +1,24 @@
+{
+  "overview": "Complete Hospital Management & Appointment Booking System for Noheria Nursing Home, Panchkula. Includes a public one-page website, full admin panel for managing appointments, doctors, blog CMS, and all website content, plus a doctor panel — all with Internet Identity authentication and role-based access.",
+  "features": [
+    "One-page public website with Hero, Services, Doctors, Appointment Booking, Blog, Testimonials, FAQ, and Contact sections",
+    "Smart appointment booking with available slot display, no double booking, and auto-doctor assignment",
+    "Full Admin Panel: manage appointments, doctors, analytics dashboard, and all website content editing",
+    "Blog CMS: create, edit, publish, and delete blog posts and videos with image uploads",
+    "Doctor Panel: doctors view and manage their own appointments",
+    "Internet Identity login with Admin and Doctor role-based access control",
+    "Analytics dashboard with appointment trend charts and doctor performance stats",
+    "Audit logs for all system actions"
+  ],
+  "category": "healthcare",
+  "tags": [
+    "hospital",
+    "appointment-booking",
+    "admin-panel",
+    "healthcare",
+    "blog-cms",
+    "analytics",
+    "internet-identity"
+  ],
+  "last_updated": "2026-04-10T06:02:22.163Z"
+}
